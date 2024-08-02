@@ -131,6 +131,7 @@ export type GAME_CODE =
   | 'WOOL_GAMES';
 export type SKYWARS_PRESTIGE =
   | 'Iron'
+  | 'Iron'
   | 'Gold'
   | 'Diamond'
   | 'Emerald'
@@ -301,6 +302,42 @@ export interface SKYBLOCK_SKILL_DATA {
   progress: number;
   cosmetic: boolean;
 }
+export interface SKYBLOCK_GARDEN_CROPS {
+  wheat: number;
+  carrot: number;
+  sugarCane: number;
+  potato: number;
+  pumpkin: number;
+  melon: number;
+  cactus: number;
+  cocoBeans: number;
+  mushroom: number;
+  netherWart: number;
+}
+export interface SKYBLOCK_GARDEN_COMPOSTER_UPGRADES {
+  speed: number;
+  multiDrop: number;
+  fuelCap: number;
+  organicMatterCap: number;
+  costReduction: number;
+}
+export interface SKYBLOCK_GARDEN_COMPOSTER {
+  organicMatter: number;
+  fuelUnits: number;
+  compostUnits: number;
+  compostItems: number;
+  conversionTicks: number;
+  upgrades: SKYBLOCK_GARDEN_COMPOSTER_UPGRADES;
+}
+export interface SKYBLOCK_GARDEN_VISITOR_SERVED {
+  total: number;
+  unique: number;
+}
+export interface SKYBLOCK_GARDEN_VISITOR {
+  visited: Record<string, number>;
+  completed: Record<string, number>;
+  served: SKYBLOCK_GARDEN_VISITOR_SERVED;
+}
 export interface SKYBLOCK_SLAYER_DATA {
   xp: number;
   tier1: number;
@@ -359,6 +396,14 @@ export interface auctionsOptions extends methodOptions {
 }
 export interface playerBingoOptions extends methodOptions {
   fetchBingoData?: boolean;
+}
+
+export interface LevelProgress {
+  currentXP: number;
+  remainingXP: number;
+  xpToNext: number;
+  percent: number;
+  percentRemaining: number;
 }
 declare module 'hypixel-api-reborn' {
   const version: string;
@@ -1167,6 +1212,20 @@ declare module 'hypixel-api-reborn' {
      */
     getSkyblockNews(options?: methodOptions): Promise<SkyblockNews>;
     /**
+     * @description Get a array of active houses
+     */
+    getActiveHouses(options?: methodOptions): Promise<House[]>;
+    /**
+     * @description Get a array of houses for a user
+     * @param query - UUID / IGN of player
+     */
+    getPlayerHouses(query: string, options?: methodOptions): Promise<House[]>;
+    /**
+     * @description Get a house
+     * @param query - house uuid
+     */
+    getHouse(query: string, options?: methodOptions): Promise<House>;
+    /**
      * @description Allows you to get player's network status
      * @param query - player nickname or uuid
      */
@@ -1270,13 +1329,7 @@ declare module 'hypixel-api-reborn' {
     giftsSent?: number;
     giftBundlesSent?: number;
     giftBundlesReceived?: number;
-    levelProgress: {
-      currentXP: number;
-      remainingXP: number;
-      xpToNext: number;
-      percent: number;
-      percentRemaining: number;
-    };
+    levelProgress: LevelProgress;
     isOnline: boolean;
     userLanguage: string;
     lastDailyReward?: Date;
@@ -1375,9 +1428,18 @@ declare module 'hypixel-api-reborn' {
     exactLevel: number;
     level: number;
     coins: number;
+    wins: number;
+    gamesPlayed: number;
+    woolsPlaced: number;
+    blocksBroken: number;
+    placeBreakRatio: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    assists: number;
+    powerups: number;
     selectedClass: 'ASSAULT' | 'TANK' | 'GOLEM' | 'SWORDSMAN' | 'ENGINEER' | 'ARCHER' | 'NONE';
     stats: {
-      overall: WoolWarsStats;
       assault: WoolWarsStats;
       tank: WoolWarsStats;
       golem: WoolWarsStats;
@@ -1389,7 +1451,7 @@ declare module 'hypixel-api-reborn' {
     privateGamesConfig: PrivateGamesConfig;
   }
   type WoolWarsStats = {
-    roundWins: number;
+    wins: number;
     gamesPlayed: number;
     woolsPlaced: number;
     blocksBroken: number;
@@ -1407,6 +1469,7 @@ declare module 'hypixel-api-reborn' {
     game_speed: string;
     speed: string;
     no_class: 'Enabled' | 'Disabled';
+    respawn_enable: boolean;
   };
   class PlayerCosmetics {
     constructor(data: Record<string, unknown>);
@@ -1685,74 +1748,105 @@ declare module 'hypixel-api-reborn' {
     monthlyCoins: number;
     hintsDisabled: boolean;
     flashDisabled: boolean;
-    drawTheirThing: BaseGame;
-    dragonWars: BaseGame;
-    easterSimulator: EasterSimulator;
-    grinchSimulator: GrinchSimulator;
-    scubaSimulator: ScubaSimulator;
-    santaSimulator: SantaSimulator;
-    santaSays: BaseGame;
-    simonSays: BaseGame;
-    farmHunt: BaseGame;
-    holeInTheWall: HITW;
-    miniWalls: MiniWalls;
-    partyGames: BaseGame;
-    partyGames2: BaseGame;
-    partyGames3: BaseGame;
-    throwOut: BaseGame;
-    soccer: Soccer;
-    hypixelSports: BaseGame;
-    enderSpleef: BaseGame;
     blockingDead: BlockingDead;
+    bountyHunters: BountyHunters;
+    captureTheWool: CaptureTheWool;
+    dragonWars: DragonWars;
+    dropper: Dropper;
+    enderSpleef: EnderSpleef;
+    farmHunt: FarmHunt;
+    football: Football;
     galaxyWars: GalaxyWars;
-    oitq: OITQ;
-    oneInTheQuiver: OITQ;
+    hideAndSeek: HideAndSeek;
+    holeInTheWall: HoleInTheWall;
+    hypixelSays: HypixelSays;
+    miniWalls: MiniWalls;
+    pixelParty: PixelParty;
     zombies: Zombies;
-    captureTheWool: { kills: number; captures: number };
   }
-  class BaseGame {
-    constructor(data: Record<string, unknown>, gameName: string);
-    wins: number | null;
-    kills: number | null;
-    deaths: number | null;
-    roundsPlayed: number | null;
-    private extend;
-  }
-  class EasterSimulator extends BaseGame {
-    eggsFound: number;
-  }
-  class GrinchSimulator extends BaseGame {
-    giftsFound: number;
-  }
-  class ScubaSimulator extends BaseGame {
-    itemsFound: number;
-  }
-  class SantaSimulator extends BaseGame {
-    giftsDelivered: number;
-  }
-  class HITW extends BaseGame {
+  class BlockingDead {
     constructor(data: Record<string, unknown>);
-    scoreRecordFinals: number;
-    scoreRecordNormal: number;
+    wins: number;
+    kills: number;
+    headshots: number;
   }
-  class MiniWalls extends BaseGame {
+  class BountyHunters {
     constructor(data: Record<string, unknown>);
-    arrowHits: number;
-    arrowShots: number;
-    bowAccuracy: number;
-    finalKills: number;
-    witherDamage: number;
-    witherKills: number;
+    wins: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    bountyKills: number;
+    bowKills: number;
+    swordKills: number;
   }
-  class Soccer {
+  class CaptureTheWool {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    draws: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    assists: number;
+    woolPickedUp: number;
+    woolCaptured: number;
+    fastestWin: number;
+    longestGame: number;
+  }
+  class DragonWars {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    kills: number;
+  }
+  class DropperMap {
+    constructor(data: Record<string, unknown>, mapName: string);
+    bestTime: number;
+    completions: number;
+  }
+  class Dropper {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    fails: number;
+    fastestGame: number;
+    flawlessGames: number;
+    gamesPlayed: number;
+    mapsCompleted: number;
+    gamesFinished: number;
+    maps: Record<string, DropperMap>;
+  }
+  class EnderSpleef {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    kills: number;
+    trail: string;
+    blocksDestroyed: number;
+    bigShotActivations: number;
+    tripleShotActivations: number;
+    totalPowerUpActivations: number;
+  }
+  class FarmHunt {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    winsAsAnimal: number;
+    winsAsHunter: number;
+    kills: number;
+    killsAsAnimal: number;
+    killsAsHunter: number;
+    tauntsUsed: number;
+    riskyTauntsUsed: number;
+    safeTauntsUsed: number;
+    dangerousTauntsUsed: number;
+    fireworkTauntsUsed: number;
+    poop: number;
+  }
+  class Football {
     constructor(data: Record<string, unknown>);
     wins: number;
     kicks: number;
     powerKicks: number;
     goals: number;
-  }
-  class BlockingDead extends BaseGame {
-    headshots: number;
   }
   class GalaxyWars {
     constructor(data: Record<string, unknown>);
@@ -1765,28 +1859,97 @@ declare module 'hypixel-api-reborn' {
     attackerKills: number;
     defenderKills: number;
   }
-  class OITQ extends BaseGame {
-    bountyKills: number;
+  class PartyPopper {
+    constructor(data: Record<string, unknown>);
+    winsAsSeeker: number;
+    winsAsHider: number;
+    wins: number;
+  }
+  class PropHunt {
+    constructor(data: Record<string, unknown>);
+    winsAsSeeker: number;
+    winsAsHider: number;
+    wins: number;
+  }
+  class HideAndSeek {
+    constructor(data: Record<string, unknown>);
+    partyPopper: PartyPopper;
+    propHunt: PropHunt;
+    winsAsSeeker: number;
+    winsAsHider: number;
+  }
+  class HoleInTheWall {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    rounds: number;
+    scoreRecordFinals: number;
+    scoreRecordNormal: number;
+    scoreRecordOverall: number;
+  }
+  class HypixelSays {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    rounds: number;
+    roundWins: number;
+    topScore: number;
+  }
+  class MiniWalls {
+    constructor(data: Record<string, unknown>);
+    kit: string;
+    wins: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    finalKills: number;
+    witherKills: number;
+    witherDamage: number;
+    arrowsShot: number;
+    arrowsHit: number;
+    bowAccuracy: number;
+  }
+  class PixelPartyGameMode {
+    constructor(data: Record<string, unknown>, modeName: string);
+    wins: number;
+    gamesPlayed: number;
+    losses: number;
+    WLRatio: number;
+    roundsPlayed: number;
+    powerUpsCollected: number;
+  }
+  class PixelParty {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    gamesPlayed: number;
+    losses: number;
+    WLRatio: number;
+    roundsPlayed: number;
+    powerUpsCollected: number;
+    normal: PixelPartyGameMode;
+    hyper: PixelPartyGameMode;
+    highestRound: number;
+    musicVolume: number;
+    colorBlind: object;
+  }
+  class ThrowOut {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
   }
   class Zombies {
     constructor(data: Record<string, unknown>);
     overall: ZombiesStats;
-    deadEnd: ZombieMap;
-    badBlood: ZombieMap;
-    alienArcadium: ZombieMap;
+    deadEnd: ZombiesStats;
+    badBlood: ZombiesStats;
+    alienArcadium: ZombiesStats;
+    prison: ZombiesStats;
     killsByZombie: Record<string, number>;
     bulletsHit: number;
     bulletsShot: number;
     gunAccuracy: number;
     headshots: number;
     headshotAccuracy: number;
-  }
-  class ZombieMap {
-    constructor(data: Record<string, unknown>, mapName: string);
-    normal: ZombiesStats;
-    hard: ZombiesStats;
-    rip: ZombiesStats;
-    overall: ZombiesStats;
   }
   class ZombiesStats {
     constructor(data: Record<string, unknown>, type?: string);
@@ -1804,35 +1967,30 @@ declare module 'hypixel-api-reborn' {
     zombieKills: number;
   }
 
+  class ArenaBrawlMode {
+    constructor(data: Record<string, unknown>);
+    damage: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    healed: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    games: number;
+    winstreak: number;
+  }
   class ArenaBrawl {
     constructor(data: Record<string, unknown>);
     coins: number;
-    mode: {
-      '1v1': {
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-      };
-      '2v2': {
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-      };
-      '4v4': {
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-      };
-    };
+    coinsSpent: number;
+    wins: number;
+    keys: number;
+    chests: number;
+    rune: string;
+    '1v1': ArenaBrawlMode;
+    '2v2': ArenaBrawlMode;
+    '4v4': ArenaBrawlMode;
   }
   class Paintball {
     constructor(data: Record<string, unknown>);
@@ -1841,45 +1999,59 @@ declare module 'hypixel-api-reborn' {
     deaths: number;
     KDRatio: number;
     wins: number;
-    losses: number;
-    WLRatio: number;
     shotsFired: number;
     killstreaks: number;
-    forcefieldTime: number;
+    forceFieldTime: number;
     hat: string;
+    adrenaline: number;
+    endurance: number;
+    fortune: number;
+    godfather: number;
+    superluck: number;
+    transfusion: number;
+  }
+  class QuakecraftMode {
+    constructor(data: Record<string, unknown>);
+    wins: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    killstreaks: number;
+    distanceTravelled: number;
+    shotsFired: number;
+    headshots: number;
   }
   class Quakecraft {
     constructor(data: Record<string, unknown>);
     coins: number;
+    solo: QuakecraftMode;
+    teams: QuakecraftMode;
+    wins: number;
     kills: number;
     deaths: number;
     KDRatio: number;
-    wins: number;
-    distanceTravelled: number;
-    headshots: number;
-    shotsFired: number;
     killstreaks: number;
-    highestKillstreak: number;
-    solo: {
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      wins: number;
-      distanceTravelled: number;
-      headshots: number;
-      shotsFired: number;
-      killstreaks: number;
-    };
-    teams: {
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      wins: number;
-      distanceTravelled: number;
-      headshots: number;
-      shotsFired: number;
-      killstreaks: number;
-    };
+    distanceTravelled: number;
+    shotsFired: number;
+    headshots: number;
+    instantRespawn: boolean;
+    killPrefixColor: string;
+    showPrefix: boolean;
+    killSound: string;
+    barrel: string;
+    case: string;
+    muzzle: string;
+    sight: string;
+    trigger: string;
+  }
+  class TurboKartRacersMap {
+    constructor(data: Record<string, unknown>, mapName: string);
+    map: string;
+    plays: number;
+    boxPickups: number;
+    bronzeTrophies: number;
+    silverTrophies: number;
+    goldTrophies: number;
   }
   class TurboKartRacers {
     constructor(data: Record<string, unknown>);
@@ -1902,31 +2074,11 @@ declare module 'hypixel-api-reborn' {
       | 'TEDDY'
       | 'TRUCK'
       | 'JERRY';
-    retroPlays: number;
-    hypixelgpPlays: number;
-    olympusPlays: number;
-    junglerushPlays: number;
-    canyonPlays: number;
-    retroBronzeTrophies: number;
-    retroSilverTrophies: number;
-    retroGoldTrophies: number;
-    retroBoxPickups: number;
-    hypixelgpBronzeTrophies: number;
-    hypixelgpSilverTrophies: number;
-    hypixelgpGoldTrophies: number;
-    hypixelgpBoxPickups: number;
-    olympusBronzeTrophies: number;
-    olympusSilverTrophies: number;
-    olympusGoldTrophies: number;
-    olympusBoxPickups: number;
-    junglerushBronzeTrophies: number;
-    junglerushSilverTrophies: number;
-    junglerushGoldTrophies: number;
-    junglerushBoxPickups: number;
-    canyonBronzeTrophies: number;
-    canyonSilverTrophies: number;
-    canyonGoldTrophies: number;
-    canyonBoxPickups: number;
+    retro: TurboKartRacersMap;
+    hypixelgp: TurboKartRacersMap;
+    olympus: TurboKartRacersMap;
+    junglerush: TurboKartRacersMap;
+    canyon: TurboKartRacersMap;
     bananaHitsReceived: number;
     bananaHitsSent: number;
     blueTorpedoHit: number;
@@ -1944,6 +2096,16 @@ declare module 'hypixel-api-reborn' {
     WLRatio: number;
     assists: number;
   }
+  class WarlordsClass {
+    constructor(data: Record<string, unknown>, className: string);
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    gamesPlayed: number;
+    damage: number;
+    heal: number;
+    damagePrevented: number;
+  }
   class Warlords {
     constructor(data: Record<string, unknown>);
     coins: number;
@@ -1953,49 +2115,154 @@ declare module 'hypixel-api-reborn' {
     wins: number;
     losses: number;
     WLRatio: number;
+    winstreak: number;
     assists: number;
     class: string;
+    pyromancer: WarlordsClass;
+    mage: WarlordsClass;
+    thunderlord: WarlordsClass;
+    shaman: WarlordsClass;
+    earthwarden: WarlordsClass;
+    aquamancer: WarlordsClass;
+    paladin: WarlordsClass;
+    avenger: WarlordsClass;
+    warrior: WarlordsClass;
+    defender: WarlordsClass;
+    cryomancer: WarlordsClass;
+    crusader: WarlordsClass;
+    berserker: WarlordsClass;
+    protector: WarlordsClass;
+    revenant: WarlordsClass;
+    spiritguard: WarlordsClass;
+  }
+  class BlitzSGKit {
+    constructor(data: Record<string, unknown>, kitName: string);
+    level: number;
+    exp: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    gamesPlayed: number;
+    losses: number;
+    WLRatio: number;
+    arrowsShot: number;
+    arrowsHit: number;
+    bowAccuracy: number;
+    damage: number;
+    damageTaken: number;
+    potionsDrunk: number;
+    potionsThrown: number;
+    playTime: number;
+    mobsSpawned: number;
+    chestsOpened: number;
   }
   class BlitzSurvivalGames {
     constructor(data: Record<string, unknown>);
     coins: number;
     kills: number;
+    kit: string;
+    killsSolo: number;
+    killsTeams: number;
     deaths: number;
     KDRatio: number;
+    wins: number;
     winsSolo: number;
     winsTeam: number;
-    kitStats: {
-      name: string;
-      games: number;
-      level: number;
-      experience: number;
-      prestige: number;
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      wins: number;
-      losses: number;
-      WLRatio: number;
-      timePlayed: number;
-    }[];
+    gamesPlayed: number;
+    losses: number;
+    WLRatio: number;
+    arrowsShot: number;
+    arrowsHit: number;
+    bowAccuracy: number;
+    damage: number;
+    damageTaken: number;
+    potionsDrunk: number;
+    potionsThrown: number;
+    mobsSpawned: number;
+    playTime: number;
+    blitzUses: number;
+    chestsOpened: number;
+    archer: BlitzSGKit;
+    meatmaster: BlitzSGKit;
+    speleologist: BlitzSGKit;
+    baker: BlitzSGKit;
+    knight: BlitzSGKit;
+    guardian: BlitzSGKit;
+    scout: BlitzSGKit;
+    hunter: BlitzSGKit;
+    hypeTrain: BlitzSGKit;
+    fisherman: BlitzSGKit;
+    armorer: BlitzSGKit;
+    horsetamer: BlitzSGKit;
+    astronaut: BlitzSGKit;
+    troll: BlitzSGKit;
+    reaper: BlitzSGKit;
+    shark: BlitzSGKit;
+    reddragon: BlitzSGKit;
+    toxicologist: BlitzSGKit;
+    rogue: BlitzSGKit;
+    warlock: BlitzSGKit;
+    slimeyslime: BlitzSGKit;
+    jockey: BlitzSGKit;
+    golem: BlitzSGKit;
+    viking: BlitzSGKit;
+    shadowKnight: BlitzSGKit;
+    pigman: BlitzSGKit;
+    paladin: BlitzSGKit;
+    necromancer: BlitzSGKit;
+    florist: BlitzSGKit;
+    diver: BlitzSGKit;
+    arachnologist: BlitzSGKit;
+    blaze: BlitzSGKit;
+    wolftamer: BlitzSGKit;
+    tim: BlitzSGKit;
+    farmer: BlitzSGKit;
+    creepertamer: BlitzSGKit;
+    snowman: BlitzSGKit;
+  }
+  class VampireZRole {
+    constructor(data: Record<string, unknown>, role: string);
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
   }
   class VampireZ {
     constructor(data: Record<string, unknown>);
     coins: number;
-    human: {
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      wins: number;
-    };
-    zombie: {
-      kills: number;
-    };
-    vampire: {
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-    };
+    goldBought: number;
+    blood: boolean;
+    zombieKills: number;
+    human: VampireZRole;
+    vampire: VampireZRole;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+  }
+  class SmashHeroesMode {
+    constructor(data: Record<string, unknown>, mode: string);
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+  }
+  class SmashHeoresHero {
+    constructor(data: Record<string, unknown>, hero: string);
+    name: string;
+    level: number;
+    xp: number;
+    prestige: number;
+    playedGames: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
   }
   class SmashHeroes {
     constructor(data: Record<string, unknown>);
@@ -2009,46 +2276,27 @@ declare module 'hypixel-api-reborn' {
     wins: number;
     losses: number;
     WLRatio: number;
-    mode: {
-      '1v1v1v1': {
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-      };
-      '2v2': {
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-      };
-      '2v2v2': {
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-      };
-    };
+    smashed: number;
+    '1v1v1v1': SmashHeroesMode;
+    '2v2': SmashHeroesMode;
+    '2v2v2': SmashHeroesMode;
     activeClass: string;
-    heroStats: {
-      name: string;
-      level: number;
-      xp: number;
-      prestige: number;
-      games: number;
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      wins: number;
-      losses: number;
-      WLRatio: number;
-    }[];
+    theBulk: SmashHeoresHero;
+    cakeMonster: SmashHeoresHero;
+    generalCluck: SmashHeoresHero;
+    botmun: SmashHeoresHero;
+    marauder: SmashHeoresHero;
+    pug: SmashHeoresHero;
+    tinman: SmashHeoresHero;
+    spoderman: SmashHeoresHero;
+    frosty: SmashHeoresHero;
+    sergeantShield: SmashHeoresHero;
+    skullfire: SmashHeoresHero;
+    goku: SmashHeoresHero;
+    sanic: SmashHeoresHero;
+    duskCrawler: SmashHeoresHero;
+    shoopDaWhoop: SmashHeoresHero;
+    greenHood: SmashHeoresHero;
   }
   class SkyblockNews {
     constructor(data: Record<string, unknown>);
@@ -2322,11 +2570,33 @@ declare module 'hypixel-api-reborn' {
     candyUsed: number;
     skin: string | null;
   }
+  class SkyblockGarden {
+    constructor(data: Record<string, unknown>);
+    level: SKYBLOCK_SKILL_DATA;
+    barnSkin: string;
+    unlockedPlots: string[];
+    visitors: SKYBLOCK_GARDEN_VISITOR;
+    cropMilestones: {
+      wheat: SKYBLOCK_SKILL_DATA;
+      carrot: SKYBLOCK_SKILL_DATA;
+      sugarCane: SKYBLOCK_SKILL_DATA;
+      potato: SKYBLOCK_SKILL_DATA;
+      pumpkin: SKYBLOCK_SKILL_DATA;
+      melon: SKYBLOCK_SKILL_DATA;
+      cactus: SKYBLOCK_SKILL_DATA;
+      cocoBeans: SKYBLOCK_SKILL_DATA;
+      mushroom: SKYBLOCK_SKILL_DATA;
+      netherWart: SKYBLOCK_SKILL_DATA;
+    };
+    composter: SKYBLOCK_GARDEN_COMPOSTER;
+    cropUpgrades: SKYBLOCK_GARDEN_CROPS;
+  }
   class SkyblockMember {
     constructor(data: Record<string, unknown>);
     uuid: string;
     player?: Player;
     museum?: object;
+    garden?: SkyblockGarden;
     profileName: string;
     profileId: string;
     firstJoinTimestamp: number;
@@ -2780,132 +3050,102 @@ declare module 'hypixel-api-reborn' {
     static CODES: GAME_CODE[];
     static NAMES: GAME_NAME[];
   }
+  class SkyWarsMode {
+    constructor(data: Record<string, unknown>, gamemode: string);
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+  }
+  class SkywarsModeStats {
+    constructor(data: Record<string, unknown>, gamemode: string);
+    activeKit: string;
+    killstreak: number;
+    kills: number;
+    voidKills: number;
+    meleeKills: number;
+    bowKills: number;
+    mobKills: number;
+    assists: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    gamesPlayed: number;
+    survivedPlayers: number;
+    chestsOpened: number;
+    timePlayed: number;
+    shard: number;
+    longestBowShot: number;
+    arrowsShot: number;
+    arrowsHit: number;
+    bowAccuracy: number;
+    fastestWin: number;
+    heads: number;
+  }
+  class SkywarsMode {
+    constructor(data: Record<string, unknown>, gamemode: string);
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+  }
   class SkyWars {
     constructor(data: Record<string, unknown>);
     coins: number;
     souls: number;
     tokens: number;
-    winstreak: number;
-    kills: number;
-    losses: number;
-    deaths: number;
-    wins: number;
-    heads: number;
     experience: number;
     level: number;
-    levelProgress: {
-      currentLevelXp: number;
-      xpToNextLevel: number;
-      percent: number;
-      xpNextLevel: number;
-    };
+    levelProgress: LevelProgress;
     levelFormatted: string;
     prestige: SKYWARS_PRESTIGE;
     prestigeIcon: SKYWARS_PRESTIGE_ICON;
-    playedGames: number;
-    KDRatio: number;
-    WLRatio: number;
     opals: number;
     avarice: number;
     tenacity: number;
     shards: number;
     angelOfDeathLevel: number;
-    solo: {
-      overall: {
-        winstreak: number;
-        playedGames: number;
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-      normal: {
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-      insane: {
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-    };
-    team: {
-      overall: {
-        winstreak: number;
-        playedGames: number;
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-      normal: {
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-      insane: {
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-    };
-    mega: {
-      overall: {
-        winstreak: number;
-        playedGames: number;
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-      solo: {
-        playedGames: number;
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-      doubles: {
-        playedGames: number;
-        kills: number;
-        wins: number;
-        losses: number;
-        deaths: number;
-        KDRatio: number;
-        WLRatio: number;
-      };
-    };
-    lab: {
-      winstreak: number;
-      playedGames: number;
-      kills: number;
-      wins: number;
-      losses: number;
-      deaths: number;
-      KDRatio: number;
-      WLRatio: number;
-    };
+    killstreak: number;
+    kills: number;
+    voidKills: number;
+    meleeKills: number;
+    bowKills: number;
+    mobKills: number;
+    assists: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    gamesPlayed: number;
+    survivedPlayers: number;
+    chestsOpened: number;
+    timePlayed: number;
+    shard: number;
+    longestBowShot: number;
+    arrowsShot: number;
+    arrowsHit: number;
+    bowAccuracy: number;
+    fastestWin: number;
+    heads: number;
+    blocksPlaced: number;
+    blocksBroken: number;
+    eggThrown: number;
+    enderpearlsThrown: number;
+    solo: SkywarsModeStats;
+    soloNormal: SkywarsMode;
+    soloInsane: SkywarsMode;
+    team: SkywarsModeStats;
+    teamNormal: SkywarsMode;
+    mega: SkywarsMode;
+    megaDoubles: SkywarsMode;
+    lab: SkywarsMode;
     packages: SkywarsPackages;
   }
   class SkywarsPackages {
@@ -3447,63 +3687,51 @@ declare module 'hypixel-api-reborn' {
     totalSlumberTickets: number;
   }
 
-  class UHC {
-    constructor(data: Record<string, unknown>);
-    coins: number;
-    score: number;
+  class UHCGamemode {
+    constructor(data: Record<string, unknown>, mode: string);
     kills: number;
     deaths: number;
     wins: number;
     headsEaten: number;
+    ultimatesCrafted: number;
+    extraUltimatesCrafted: number;
+  }
+  class UHC {
+    constructor(data: Record<string, unknown>);
+    coins: number;
+    score: number;
+    kit: string;
+    solo: UHCGamemode;
+    team: UHCGamemode;
+    redVsBlue: UHCGamemode;
+    noDiamond: UHCGamemode;
+    brawl: UHCGamemode;
+    soloBrawl: UHCGamemode;
+    duoBrawl: UHCGamemode;
+    wins: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    headsEaten: number;
+    ultimatesCrafted: number;
+    extraUltimatesCrafted: number;
     starLevel: number;
-    solo: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
-    team: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
-    redVsBlue: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
-    noDiamond: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
-    brawl: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
-    brawlSolo: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
-    brawlDuo: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      headsEaten: number;
-    };
+  }
+  class SpeedUHCMode {
+    constructor(data: Record<string, unknown>, mode: string);
+    kills: number;
+    deaths: number;
+    wins: number;
+    losses: number;
+    playedGames: number;
+    winstreak: number;
+    killStreak: number;
+    assists: number;
   }
   class SpeedUHC {
     constructor(data: Record<string, unknown>);
     coins: number;
     kills: number;
-    killstreak: number;
     deaths: number;
     KDRatio: number;
     wins: number;
@@ -3511,66 +3739,215 @@ declare module 'hypixel-api-reborn' {
     WLRatio: number;
     playedGames: number;
     winstreak: number;
+    killstreak: number;
     blocksBroken: number;
     blocksPlaced: number;
     quits: number;
     itemsEnchanted: number;
     assists: number;
-    solo: {
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      playedGames: number;
-      winstreak: number;
-      killstreak: number;
-      assists: number;
-    };
-    team: {
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      playedGames: number;
-      winstreak: number;
-      killstreak: number;
-      assists: number;
-    };
+    solo: SpeedUHCMode;
+    soloNormal: SpeedUHCMode;
+    soloInsane: SpeedUHCMode;
+    team: SpeedUHCMode;
+    teamNormal: SpeedUHCMode;
+    teamInsane: SpeedUHCMode;
+  }
+  class MurderMysteryModeStats {
+    constructor(data: Record<string, unknown>, gamemode: string);
+    goldPickedUp: number;
+    kills: number;
+    thrownKnifeKills: number;
+    knifeKills: number;
+    bowKills: number;
+    trapKills: number;
+    deaths: number;
+    suicides: number;
+    KDRatio: number;
+    wins: number;
+    winsAsDetective: number;
+    winsAsMurderer: number;
+    winsAsHero: number;
+    playedGames: number;
   }
   class MurderMystery {
     constructor(data: Record<string, unknown>);
     tokens: number;
+    goldPickedUp: number;
     playedGames: number;
     kills: number;
+    thrownKnifeKills: number;
+    knifeKills: number;
+    trapKills: number;
+    bowKills: number;
+    killsAsMurderer: number;
     deaths: number;
+    KDRatio: number;
     winsAsMurderer: number;
     winsAsDetective: number;
+    winsAsHero: number;
+    fastestWinAsMurderer: number;
+    fastestWinAsDetective: number;
+    totalTimeSurvived: number;
     wins: number;
-    assassins: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      playedGames: number;
-    };
-    doubleUp: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      playedGames: number;
-    };
-    infection: {
-      wins: number;
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      playedGames: number;
-    };
+    suicides: number;
+    classic: MurderMysteryModeStats;
+    assassins: MurderMysteryModeStats;
+    doubleUp: MurderMysteryModeStats;
+    infection: MurderMysteryModeStats;
+  }
+  class DuelsGamemode {
+    constructor(data: Record<string, unknown>, mode: string, title: string);
+    title: string;
+    winstreak: number;
+    bestWinstreak: number;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    playedGames: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    blocksPlaced: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
+  }
+  class DuelsUHC {
+    constructor(data: Record<string, unknown>, mode: string, title: string);
+    title: string;
+    winstreak: number;
+    bestWinstreak: number;
+    solo: DuelsGamemode;
+    doubles: DuelsGamemode;
+    fours: DuelsGamemode;
+    deathmatch: DuelsGamemode;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    playedGames: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    blocksPlaced: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
+  }
+  class DuelsSkyWars {
+    constructor(data: Record<string, unknown>, mode: string, title: string);
+    title: string;
+    winstreak: number;
+    bestWinstreak: number;
+    solo: DuelsGamemode;
+    doubles: DuelsGamemode;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    playedGames: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    blocksPlaced: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
+  }
+  class DuelsMegaWalls {
+    constructor(data: Record<string, unknown>, mode: string, title: string);
+    title: string;
+    winstreak: number;
+    bestWinstreak: number;
+    solo: DuelsGamemode;
+    doubles: DuelsGamemode;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    playedGames: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    blocksPlaced: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
+  }
+  class DuelsOP {
+    constructor(data: Record<string, unknown>, mode: string, title: string);
+    title: string;
+    winstreak: number;
+    bestWinstreak: number;
+    solo: DuelsGamemode;
+    doubles: DuelsGamemode;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    playedGames: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    blocksPlaced: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
+  }
+  class DuelsBridge {
+    constructor(data: Record<string, unknown>, mode: string, title: string);
+    title: string;
+    winstreak: number;
+    bestWinstreak: number;
+    solo: DuelsGamemode;
+    doubles: DuelsGamemode;
+    threes: DuelsGamemode;
+    fours: DuelsGamemode;
+    '2v2v2v2': DuelsGamemode;
+    '3v3v3v3': DuelsGamemode;
+    ctf: DuelsGamemode;
+    kills: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    playedGames: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    blocksPlaced: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
   }
   class Duels {
-    division?: string;
+    constructor(data: Record<string, unknown>);
     tokens: number;
+    title: string | null;
     kills: number;
     deaths: number;
     KDRatio: number;
@@ -3580,381 +3957,43 @@ declare module 'hypixel-api-reborn' {
     playedGames: number;
     winstreak: number;
     bestWinstreak: number;
-    parkour: {
-      division?: string;
-      deaths: number;
-      wins: number;
-      losses: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    boxing: {
-      division?: string;
-      kills: number;
-      wins: number;
-      losses: number;
-      WLRatio: number;
-      playedGames: number;
-      meleeSwings: number;
-      meleeHits: number;
-    };
-    arena: {
-      kills: number;
-      deaths: number;
-      KDRatio: number;
-      wins: number;
-      losses: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    bowspleef: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      bowShots: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    uhc: {
-      overall: {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '1v1': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '2v2': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '4v4': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      meetup: {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-    };
-    op: {
-      overall: {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '1v1': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '2v2': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-    };
-    skywars: {
-      overall: {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '1v1': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-      '2v2': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-      };
-    };
-    sumo: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    classic: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    combo: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    bridge: {
-      overall: {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      '1v1': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      '2v2': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      '3v3': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      '4v4': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      '2v2v2v2': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      '3v3v3v3': {
-        division?: string;
-        winstreak: number;
-        bestWinstreak: number;
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-        KDRatio: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-      ctf: {
-        division?: string;
-        kills: number;
-        deaths: number;
-        KDRatio: number;
-        wins: number;
-        losses: number;
-        WLRatio: number;
-        playedGames: number;
-        goals: number;
-      };
-    };
-    megawalls: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    blitz: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    nodebuff: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
-    bow: {
-      division?: string;
-      winstreak: number;
-      bestWinstreak: number;
-      kills: number;
-      deaths: number;
-      wins: number;
-      losses: number;
-      KDRatio: number;
-      WLRatio: number;
-      playedGames: number;
-    };
+    ping: number;
+    blocksPlaced: number;
+    swings: number;
+    hits: number;
+    meleeAccuracy: number;
+    bowShots: number;
+    bowHits: number;
+    bowAccuracy: number;
+    healthRegenerated: number;
+    goldenApplesEatan: number;
+    uhc: DuelsUHC;
+    skywars: DuelsSkyWars;
+    megawalls: DuelsMegaWalls;
+    blitz: DuelsGamemode;
+    op: DuelsOP;
+    classic: DuelsGamemode;
+    bow: DuelsGamemode;
+    noDebuff: DuelsGamemode;
+    combo: DuelsGamemode;
+    bowSpleef: DuelsGamemode;
+    sumo: DuelsGamemode;
+    bridge: DuelsBridge;
+    parkour: DuelsGamemode;
+    arena: DuelsGamemode;
   }
   class BuildBattle {
     constructor(data: Record<string, unknown>);
     score: number;
-    playedGames: number;
+    totalWins: number;
+    games: number;
+    WLRatio: number;
+    superVotes: number;
     coins: number;
     totalVotes: number;
-    totalWins: number;
     wins: {
       solo: number;
-      team: number;
+      teams: number;
       pro: number;
       gtb: number;
     };
@@ -3969,9 +4008,55 @@ declare module 'hypixel-api-reborn' {
     endedAt?: Date;
     endedTimestamp?: number;
   }
+  class MegaWallsModeStats {
+    constructor(data: Record<string, unknown>, mode: string, kit?: string);
+    kills: number;
+    assists: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    finalKills: number;
+    finalAssists: number;
+    finalDeaths: number;
+    finalKDRatio: number;
+    playedGames: number;
+    witherDamage: number;
+    defenderKills: number;
+    walked: number;
+    blocksPlaced: number;
+    blocksBroken: number;
+    meleeKills: number;
+    damageDealt: number;
+  }
+  class MegaWallsKitStats {
+    constructor(data: Record<string, unknown>, kit: string);
+    kills: number;
+    assists: number;
+    deaths: number;
+    KDRatio: number;
+    wins: number;
+    losses: number;
+    WLRatio: number;
+    finalKills: number;
+    finalAssists: number;
+    finalDeaths: number;
+    finalKDRatio: number;
+    playedGames: number;
+    witherDamage: number;
+    defenderKills: number;
+    walked: number;
+    blocksPlaced: number;
+    blocksBroken: number;
+    meleeKills: number;
+    damageDealt: number;
+    faceOff: MegaWallsModeStats;
+    casualBrawl: MegaWallsModeStats;
+  }
   class MegaWalls {
     constructor(data: Record<string, unknown>);
-    selectedClass: string;
+    selectedClass: string | null;
     coins: number;
     kills: number;
     assists: number;
@@ -3987,26 +4072,39 @@ declare module 'hypixel-api-reborn' {
     playedGames: number;
     witherDamage: number;
     defenderKills: number;
-    mode: {
-      normal: {
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-      };
-      faceoff: {
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-      };
-      casualBrawl: {
-        kills: number;
-        deaths: number;
-        wins: number;
-        losses: number;
-      };
-    };
+    walked: number;
+    blocksPlaced: number;
+    blocksBroken: number;
+    meleeKills: number;
+    damageDealt: number;
+    faceOff: MegaWallsModeStats;
+    casualBrawl: MegaWallsModeStats;
+    cow: MegaWallsKitStats;
+    hunter: MegaWallsKitStats;
+    shark: MegaWallsKitStats;
+    arcanist: MegaWallsKitStats;
+    deadlord: MegaWallsKitStats;
+    golem: MegaWallsKitStats;
+    herobrine: MegaWallsKitStats;
+    pigman: MegaWallsKitStats;
+    zombie: MegaWallsKitStats;
+    blaze: MegaWallsKitStats;
+    enderman: MegaWallsKitStats;
+    shaman: MegaWallsKitStats;
+    squid: MegaWallsKitStats;
+    creeper: MegaWallsKitStats;
+    pirate: MegaWallsKitStats;
+    sheep: MegaWallsKitStats;
+    skeleton: MegaWallsKitStats;
+    spider: MegaWallsKitStats;
+    werewolf: MegaWallsKitStats;
+    angel: MegaWallsKitStats;
+    assassin: MegaWallsKitStats;
+    automaton: MegaWallsKitStats;
+    moleman: MegaWallsKitStats;
+    phoenix: MegaWallsKitStats;
+    renegade: MegaWallsKitStats;
+    snowman: MegaWallsKitStats;
   }
   class APIStatus {
     constructor(data: Record<string, unknown>);
@@ -4329,6 +4427,17 @@ declare module 'hypixel-api-reborn' {
     type: BINGO_TYPE;
     tierStep?: number;
     requiredAmount?: number;
+    toString(): string;
+  }
+  class House {
+    constructor(data: Record<string, unknown>);
+    name: string;
+    uuid: string;
+    owner: string;
+    createdAtTimestamp: number;
+    createdAt: Date;
+    players: number;
+    cookies: number;
     toString(): string;
   }
 }

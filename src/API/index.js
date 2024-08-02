@@ -22,9 +22,14 @@ module.exports = {
   getSkyblockBingoByPlayer: require('./skyblock/getBingoByPlayer.js'),
   getSkyblockEndedAuctions: require('./skyblock/getEndedAuctions.js'),
   getSkyblockFireSales: require('./skyblock/getFireSales.js'),
+  getSkyblockGarden: require('./skyblock/getGarden.js'),
   getSkyblockGovernment: require('./skyblock/getGovernment.js'),
   getSkyblockMember: require('./skyblock/getMember.js'),
   getSkyblockMuseum: require('./skyblock/getMuseum.js'),
   getSkyblockNews: require('./skyblock/getNews.js'),
-  getSkyblockProfiles: require('./skyblock/getProfiles.js')
+  getSkyblockProfiles: require('./skyblock/getProfiles.js'),
+
+  getActiveHouses: require('./housing/getActiveHouses.js'),
+  getPlayerHouses: require('./housing/getPlayerHouses.js'),
+  getHouse: require('./housing/getHouse.js')
 };

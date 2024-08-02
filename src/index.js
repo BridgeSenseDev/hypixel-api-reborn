@@ -29,6 +29,7 @@ module.exports = {
   /* SkyBlock */
   SkyblockProfile: require('./structures/SkyBlock/SkyblockProfile.js'),
   SkyblockMember: require('./structures/SkyBlock/SkyblockMember.js'),
+  SkyblockGarden: require('./structures/SkyBlock/SkyblockGarden.js'),
   SkyblockInventoryItem: require('./structures/SkyBlock/SkyblockInventoryItem.js'),
   SkyblockPet: require('./structures/SkyBlock/SkyblockPet'),
   GovernmentData: require('./structures/SkyBlock/Static/Government.js'),
@@ -54,6 +55,9 @@ module.exports = {
   /* Booster */
   Booster: require('./structures/Boosters/Booster.js'),
 
+  /* House */
+  House: require('./structures/House.js'),
+
   /* MiniGames */
   Arcade: require('./structures/MiniGames/Arcade.js'),
   ArenaBrawl: require('./structures/MiniGames/ArenaBrawl.js'),
@@ -65,6 +69,7 @@ module.exports = {
   MegaWalls: require('./structures/MiniGames/MegaWalls.js'),
   MurderMystery: require('./structures/MiniGames/MurderMystery.js'),
   Paintball: require('./structures/MiniGames/Paintball.js'),
+  Pit: require('./structures/MiniGames/Pit.js'),
   Quakecraft: require('./structures/MiniGames/Quakecraft.js'),
   SkyWars: require('./structures/MiniGames/SkyWars.js'),
   SmashHeroes: require('./structures/MiniGames/SmashHeroes.js'),

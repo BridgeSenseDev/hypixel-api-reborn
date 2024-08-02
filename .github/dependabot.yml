@@ -4,9 +4,16 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    assignees:
+      - 'kathund'
+    reviewers:
+      - 'kathund'
     commit-message:
       prefix: '🟨'
       prefix-development: '🟦'
     open-pull-requests-limit: 10
     labels:
       - 'dependencies'
+    ignore:
+      - dependency-name: 'chai'
+      - dependency-name: 'mocha'

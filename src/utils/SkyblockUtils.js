@@ -29,6 +29,39 @@ function getLevelByXp(xp, type, levelCap) {
     case 'social':
       xpTable = constants.socialXp;
       break;
+    case 'garden':
+      xpTable = constants.garden;
+      break;
+    case 'wheat':
+      xpTable = constants.wheat;
+      break;
+    case 'carrot':
+      xpTable = constants.carrot;
+      break;
+    case 'potato':
+      xpTable = constants.potato;
+      break;
+    case 'melon':
+      xpTable = constants.melon;
+      break;
+    case 'pumpkin':
+      xpTable = constants.pumpkin;
+      break;
+    case 'sugarCane':
+      xpTable = constants.sugarCane;
+      break;
+    case 'cocoaBeans':
+      xpTable = constants.cocoaBeans;
+      break;
+    case 'cactus':
+      xpTable = constants.cactus;
+      break;
+    case 'mushroom':
+      xpTable = constants.mushroom;
+      break;
+    case 'netherWart':
+      xpTable = constants.netherWart;
+      break;
     default:
       xpTable = constants.levelingXp;
   }
