@@ -22,6 +22,7 @@
     "prettier:check": "pnpm exec prettier --check .",
     "prettier": "pnpm exec prettier --write .",
     "build": "pnpm exec tsc",
+    "prepare": "pnpm run build",
     "test": "pnpm exec vitest run",
     "test:generate": "pnpm exec tsx .github/scripts/generateBasicTests.ts",
     "test:coverage": "pnpm exec vitest run --coverage",
