@@ -1,9 +1,14 @@
 import BedWarsBoxes from './BedWarsBoxes.js';
+import BedWarsEightOne from './BedWarsEightOne.ts';
+import BedWarsEightTwo from './BedWarsEightTwo.ts';
 import BedWarsFavorites from './BedWarsFavorites.js';
 import BedWarsFigurines from './BedWarsFigurines.js';
+import BedWarsFourFour from './BedWarsFourFour.ts';
+import BedWarsFourThree from './BedWarsFourThree.ts';
 import BedWarsMode from './BedWarsMode.js';
 import BedWarsPrivateGameSettings from './BedWarsPrivateGameSettings.js';
 import BedWarsSettings from './BedWarsSettings.js';
+import BedWarsTwoFour from './BedWarsTwoFour.ts';
 import { BedWarsPrestiges } from '../../../Utils/Constants.js';
 import type {
   BedWarsBedDestroy,
@@ -61,6 +66,11 @@ class BedWars extends BedWarsMode {
   figurines: BedWarsFigurines;
   privateGameSettings: BedWarsPrivateGameSettings;
   settings: BedWarsSettings;
+  eightOne: BedWarsEightOne;
+  eightTwo: BedWarsEightTwo;
+  fourThree: BedWarsFourThree;
+  fourFour: BedWarsFourFour;
+  twoFour: BedWarsTwoFour;
   constructor(data: Record<string, any>) {
     super(data);
     this.experience = data?.Experience || 0;
@@ -98,6 +108,11 @@ class BedWars extends BedWarsMode {
     this.figurines = new BedWarsFigurines(data?.figurines || {});
     this.privateGameSettings = new BedWarsPrivateGameSettings(data?.privategames || {});
     this.settings = new BedWarsSettings(data?.settings || {});
+    this.eightOne = new BedWarsEightOne(data || {});
+    this.eightTwo = new BedWarsEightTwo(data || {});
+    this.fourThree = new BedWarsFourThree(data || {});
+    this.fourFour = new BedWarsFourFour(data || {});
+    this.twoFour = new BedWarsTwoFour(data || {});
   }
 
   static getPrestige(level: number): BedWarsPrestige {
