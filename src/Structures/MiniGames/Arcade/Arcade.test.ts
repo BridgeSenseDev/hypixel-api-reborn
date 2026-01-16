@@ -1,6 +1,7 @@
 import Arcade from './Arcade.js';
 import ArcadeOptions from './ArcadeOptions.js';
 import BlockingDead from './BlockingDead.js';
+import Disasters from './Disasters.js';
 import DragonWars from './DragonWars.js';
 import DrawTheirThing from './DrawTheirThing.js';
 import Dropper from './Dropper/Dropper.js';
@@ -132,6 +133,9 @@ test('Arcade', () => {
   expect(data.blockingDead).toBeDefined();
   expect(data.blockingDead).toBeInstanceOf(BlockingDead);
   expectTypeOf(data.blockingDead).toEqualTypeOf<BlockingDead>();
+  expect(data.disasters).toBeDefined();
+  expect(data.disasters).toBeInstanceOf(Disasters);
+  expectTypeOf(data.disasters).toEqualTypeOf<Disasters>();
   expect(data.dragonWars).toBeDefined();
   expect(data.dragonWars).toBeInstanceOf(DragonWars);
   expectTypeOf(data.dragonWars).toEqualTypeOf<DragonWars>();

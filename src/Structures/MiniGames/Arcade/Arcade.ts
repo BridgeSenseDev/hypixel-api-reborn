@@ -1,5 +1,6 @@
 import ArcadeOptions from './ArcadeOptions.js';
 import BlockingDead from './BlockingDead.js';
+import Disasters from './Disasters.js';
 import DragonWars from './DragonWars.js';
 import DrawTheirThing from './DrawTheirThing.js';
 import Dropper from './Dropper/Dropper.js';
@@ -74,6 +75,7 @@ class Arcade {
   xmasMusic: boolean;
   packages: ArcadePackage[];
   blockingDead: BlockingDead;
+  disasters: Disasters;
   dragonWars: DragonWars;
   dropper: Dropper;
   drawTheirThing: DrawTheirThing;
@@ -138,6 +140,7 @@ class Arcade {
     this.xmasMusic = data?.xmas_music || false;
     this.packages = data?.packages || [];
     this.blockingDead = new BlockingDead(data);
+    this.disasters = new Disasters(data?.disasters || {});
     this.dragonWars = new DragonWars(data);
     this.dropper = new Dropper(data?.dropper || {});
     this.drawTheirThing = new DrawTheirThing(data);
