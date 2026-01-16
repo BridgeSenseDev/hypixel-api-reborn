@@ -1,3 +1,6 @@
+import ZombiesMap from './ZombiesMap.js';
+import type { ArcadeZombiesMaps } from '../../../../Types/Player.js';
+
 class Zombies {
   basicZombieKills: number;
   basketballZombieKills: number;
@@ -105,6 +108,7 @@ class Zombies {
   wormZombieKills: number;
   zombieKills: number;
   hideTutorials: boolean;
+  maps: Record<ArcadeZombiesMaps, ZombiesMap>;
   constructor(data: Record<string, any>) {
     this.basicZombieKills = data?.basic_zombie_kills_zombies || 0;
     this.basketballZombieKills = data?.basketball_zombie_zombie_kills_zombies || 0;
@@ -212,6 +216,12 @@ class Zombies {
     this.wormZombieKills = data?.worm_zombie_kills_zombies || 0;
     this.zombieKills = data?.zombie_kills_zombies || 0;
     this.hideTutorials = data?.zombies_hideTutorials || false;
+    this.maps = {
+      alienarcadium: new ZombiesMap(data, 'alienarcadium'),
+      badblood: new ZombiesMap(data, 'badblood'),
+      deadend: new ZombiesMap(data, 'deadend'),
+      prison: new ZombiesMap(data, 'prison')
+    };
   }
 }
 

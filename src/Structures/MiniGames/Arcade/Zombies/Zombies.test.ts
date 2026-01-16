@@ -1,8 +1,10 @@
-import Zombies from './Zombies.js';
-import { expect, expectTypeOf, test } from 'vitest';
+import Zombies from "./Zombies.js";
+import ZombiesMap from "./ZombiesMap.js";
+import type { ArcadeZombiesMaps } from "../../../../Types/Player.js";
+import { expect, expectTypeOf, test } from "vitest";
 
-test('Zombies', () => {
-  const data = new Zombies({ stats: 'meow' });
+test("Zombies", () => {
+  const data = new Zombies({ stats: "meow" });
   expect(data).toBeDefined();
   expect(data).toBeInstanceOf(Zombies);
   expectTypeOf(data).toEqualTypeOf<Zombies>();
@@ -323,4 +325,16 @@ test('Zombies', () => {
   expectTypeOf(data.zombieKills).toEqualTypeOf<number>();
   expect(data.hideTutorials).toBeDefined();
   expectTypeOf(data.hideTutorials).toEqualTypeOf<boolean>();
+  expect(data.maps).toBeDefined();
+  expectTypeOf(data.maps).toEqualTypeOf<
+    Record<ArcadeZombiesMaps, ZombiesMap>
+  >();
+  expect(data.maps.alienarcadium).toBeDefined();
+  expect(data.maps.alienarcadium).toBeInstanceOf(ZombiesMap);
+  expect(data.maps.badblood).toBeDefined();
+  expect(data.maps.badblood).toBeInstanceOf(ZombiesMap);
+  expect(data.maps.deadend).toBeDefined();
+  expect(data.maps.deadend).toBeInstanceOf(ZombiesMap);
+  expect(data.maps.prison).toBeDefined();
+  expect(data.maps.prison).toBeInstanceOf(ZombiesMap);
 });
