@@ -13,13 +13,14 @@ import PlayerScorpiusBribe from './PlayerScorpiusBribe.js';
 import PlayerSocialMedia from './PlayerSocialMedia.js';
 import PlayerStats from './PlayerStats.js';
 import RecentGame from '../RecentGame.js';
-import type RequestData from '../../Private/RequestData.ts';
+import type RequestData from '../../Private/RequestData.js';
 import type { ChatChannel, Language, LevelProgress, PlayerRank } from '../../Types/Player.js';
 
 class Player {
   nickname: string;
   uuid: string;
   rank: PlayerRank;
+  formattedNickname: string;
   firstLoginAt: Date | null;
   lastLoginAt: Date | null;
   lastLogoutAt: Date | null;
@@ -53,6 +54,7 @@ class Player {
     this.nickname = data?.displayname || 'UNKNOWN';
     this.uuid = data?.uuid || 'UNKNOWN';
     this.rank = this.getRank(data);
+    this.formattedNickname = this.rank !== null ? `[${this.rank}] ${this.nickname}` : this.nickname;
     this.firstLoginAt = data?.firstLogin ? new Date(data?.firstLogin) : null;
     this.lastLoginAt = data?.lastLogin ? new Date(data?.lastLogin) : null;
     this.lastLogoutAt = data?.lastLogout ? new Date(data?.lastLogout) : null;
@@ -107,10 +109,10 @@ class Player {
       }
     } else if (player.rank) {
       switch (player.rank) {
-        case 'ADMIN':
-          return 'Admin';
-        case 'GAME_MASTER':
-          return 'Game Master';
+        case 'STAFF':
+          return 'Staff';
+        case 'YOUTUBER':
+          return 'YouTube';
         default:
           return null;
       }

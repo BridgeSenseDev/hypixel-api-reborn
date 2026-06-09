@@ -7,9 +7,11 @@ import {
   DEFAULT_SKILL_CAPS,
   DUNGEONEERING_XP,
   GARDEN_XP,
+  HOTF_XP,
   HOTM_XP,
   INFINITE,
   MELON,
+  MOONFLOWER,
   MUSHROOM,
   NETHER_WART,
   POTATO,
@@ -19,11 +21,13 @@ import {
   SLAYER_XP,
   SOCIAL_XP,
   SUGAR_CANE,
+  SUNFLOWER,
   WHEAT,
+  WILD_ROSE,
   petRarityOffset
 } from './Constants.js';
 import { parse, simplify } from 'prismarine-nbt';
-import type SkyBlockProfile from '../Structures/SkyBlock/Profile/SkyBlockProfile.ts';
+import type SkyBlockProfile from '../Structures/SkyBlock/Profile/SkyBlockProfile.js';
 import type {
   LevelData,
   PetLevelData,
@@ -31,7 +35,7 @@ import type {
   SkillLevelData,
   SkyBlockPetId,
   SkyBlockSlayer,
-  SkyBlockXPTables,
+  SkyBlockXPTable,
   SkyHelperNetWorthProfile
 } from '../Types/SkyBlock.js';
 
@@ -108,13 +112,14 @@ export function getSlayerLevel(slayer: SkyBlockSlayer, xp: number): LevelData {
   return { xp, xpForNext: 0, level: 0, maxLevel, maxed: false, progress: 0 };
 }
 
-function getXpTable(type: SkyBlockXPTables): Record<number, number> {
+function getXpTable(type: SkyBlockXPTable): Record<number, number> {
   const SKILL_TABLES = {
     default: DEFAULT_LEVELING_XP,
     runecrafting: RUNECRAFTING_XP,
     social: SOCIAL_XP,
     dungeoneering: DUNGEONEERING_XP,
-    hotm: HOTM_XP,
+    mining_tree: HOTM_XP,
+    foraging_tree: HOTF_XP,
     farming: DEFAULT_LEVELING_XP,
     mining: DEFAULT_LEVELING_XP,
     combat: DEFAULT_LEVELING_XP,
@@ -134,13 +139,16 @@ function getXpTable(type: SkyBlockXPTables): Record<number, number> {
     cactus: CACTUS,
     cocoaBeans: COCOA_BEANS,
     mushroom: MUSHROOM,
-    netherWart: NETHER_WART
+    netherWart: NETHER_WART,
+    moonFlower: MOONFLOWER,
+    sunFlower: SUNFLOWER,
+    wildRose: WILD_ROSE
   };
 
   return SKILL_TABLES[type] ?? DEFAULT_LEVELING_XP;
 }
 
-export type Extra = { type: SkyBlockXPTables; cap?: number };
+export type Extra = { type: SkyBlockXPTable; cap?: number };
 
 // Credit: https://github.com/SkyCryptWebsite/SkyCryptv2/blob/2d4d0317b1f7a9f27e59d25afd4df24c0e49b0da/src/lib/server/stats/leveling/leveling.ts#L43-L126 (modified)
 export function getLevelByXp(xp: number, extra: Extra = { type: 'default' }): SkillLevelData {

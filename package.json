@@ -1,6 +1,6 @@
 {
   "name": "hypixel-api-reborn",
-  "version": "12.0.0-16",
+  "version": "12.0.0-24",
   "description": "Feature-rich Hypixel API wrapper for Node.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,8 +17,8 @@
     "url": "https://github.com/Hypixel-API-Reborn/hypixel-api-reborn/issues"
   },
   "scripts": {
-    "lint": "pnpm lint:check --fix",
-    "lint:check": "pnpm exec eslint",
+    "eslint:check": "pnpm exec eslint . ",
+    "eslint": "pnpm eslint:check --fix",
     "prettier:check": "pnpm exec prettier --check .",
     "prettier": "pnpm exec prettier --write .",
     "build": "pnpm exec tsc",
@@ -27,7 +27,10 @@
     "test:coverage": "pnpm exec vitest run --coverage",
     "test:coverage:check": "pnpm exec tsx .github/scripts/checkCoverage.ts",
     "test:ui": "pnpm exec vitest --ui --coverage",
-    "docgen": "pnpm exec typedoc"
+    "scripts:generate:index": "pnpm exec tsx .github/scripts/generateIndexFile.ts",
+    "scripts:generate:index:api": "pnpm exec tsx .github/scripts/generateAPIIndexFile.ts",
+    "docgen": "pnpm exec typedoc",
+    "prepare": "pnpm build"
   },
   "engines": {
     "node": ">=20.19.5"
@@ -36,9 +39,10 @@
   "packageManager": "pnpm@9.7.1",
   "author": "Kathund",
   "dependencies": {
-    "minecraft-data": "^3.100.0",
+    "minecraft-data": "^3.110.2",
+    "mowojang": "^0.4.5",
     "node-cache": "^5.1.2",
-    "prismarine-nbt": "^2.7.0",
+    "prismarine-nbt": "^2.8.0",
     "rss-parser": "^3.13.0"
   },
   "license": "MIT",
@@ -52,26 +56,26 @@
   "publisher": "Kathund",
   "devDependencies": {
     "@8hobbies/typedoc-plugin-404": "^3.2.1",
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.4",
     "@j4cobi/eslint-plugin-sort-imports": "^1.0.2",
-    "@stylistic/eslint-plugin": "^5.6.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/eslint": "^9.6.1",
     "@types/node": "^20.19.5",
     "@types/xml2js": "^0.4.14",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
-    "dotenv": "^17.2.3",
-    "eslint": "^9.39.1",
+    "dotenv": "^17.4.2",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "globals": "^16.5.0",
-    "prettier": "^3.6.2",
-    "tsx": "^4.20.6",
+    "prettier": "^3.8.3",
+    "tsx": "^4.22.3",
     "typedoc": "^0.27.9",
     "typedoc-material-theme": "^1.4.1",
     "typedoc-plugin-rename-defaults": "^0.7.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.47.0",
+    "typescript-eslint": "^8.60.0",
     "vitest": "^3.2.4",
     "xml2js": "^0.6.2"
   }

@@ -1,19 +1,20 @@
 import Endpoint from '../Private/Endpoint.js';
-import Errors from '../Errors.ts';
+import Errors from '../Errors.js';
+import HypixelAPIRebornError from '../Private/HypixelAPIRebornError.ts';
 import RequestData from '../Private/RequestData.js';
 import SkyBlockAuction from '../Structures/SkyBlock/Auctions/SkyBlockAuction.js';
 import SkyBlockBaseAuctionInfo from '../Structures/SkyBlock/Auctions/SkyBlockBaseAuctionInfo.js';
-import type { AuctionFetchOptions, AuctionRequestOptions, SkyBlockAuctionResult } from '../Types/API.js';
+import type { AuctionFetchOption, AuctionRequestOptions, SkyBlockAuctionResult } from '../Types/API.js';
 
 class getSkyBlockAction extends Endpoint {
   override async execute(
-    type: AuctionFetchOptions,
+    type: AuctionFetchOption,
     query: string,
     options?: AuctionRequestOptions
   ): Promise<SkyBlockAuctionResult | RequestData> {
     let filter: string | null;
-    if (type === undefined) throw new Error(Errors.BAD_AUCTION_FILTER);
-    if (query === undefined) throw new Error(Errors.NO_UUID);
+    if (type === undefined) throw new HypixelAPIRebornError(Errors.BAD_AUCTION_FILTER);
+    if (query === undefined) throw new HypixelAPIRebornError(Errors.NO_UUID);
 
     switch (type) {
       case 'PROFILE': {
@@ -34,7 +35,7 @@ class getSkyBlockAction extends Endpoint {
       }
     }
 
-    if (filter === null) throw new Error(Errors.BAD_AUCTION_FILTER);
+    if (filter === null) throw new HypixelAPIRebornError(Errors.BAD_AUCTION_FILTER);
 
     const res = await this.client.requestHandler.request(`/skyblock/auction?${filter}=${query}`, options);
     if (res.options.raw) return res;

@@ -3,6 +3,7 @@
 
 import Client from './Client.js';
 import Errors from './Errors.js';
+import HypixelAPIRebornError from './Private/HypixelAPIRebornError.js';
 
 export * from './Types/API.js';
 export * from './Types/Booster.js';
@@ -21,6 +22,7 @@ export * from './Utils/Divide.js';
 export * from './Utils/Guild.js';
 export * from './Utils/Oscillation.js';
 export * from './Utils/ParseBoosterType.js';
+export * from './Utils/ParseMode.js';
 export * from './Utils/RemoveSnakeCase.js';
 export * from './Utils/Romanize.js';
 export * from './Utils/SkyBlockUtils.js';
@@ -32,22 +34,50 @@ import ArcadeOptions from './Structures/MiniGames/Arcade/ArcadeOptions.js';
 import ArenaBrawl from './Structures/MiniGames/ArenaBrawl/ArenaBrawl.js';
 import ArenaBrawlMode from './Structures/MiniGames/ArenaBrawl/ArenaBrawlMode.js';
 import BaseAchievement from './Structures/Static/Achievements/BaseAchievement.js';
+import BaseKillDeathsType from './Structures/MiniGames/Shared/BaseKillDeathsType.js';
+import BaseSkyWarsMode from './Structures/MiniGames/SkyWars/SkyWarsMode/BaseSkyWarsMode.js';
 import BedWars from './Structures/MiniGames/BedWars/BedWars.js';
 import BedWarsBeds from './Structures/MiniGames/BedWars/BedWarsBeds.js';
-import BedWarsCollectedItems from './Structures/MiniGames/BedWars/BedWarsCollectedItems.js';
-import BedWarsDreamMode from './Structures/MiniGames/BedWars/BedWarsDreamMode.js';
-import BedWarsDreamStats from './Structures/MiniGames/BedWars/BedWarsDreamStats.js';
+import BedWarsBoxes from './Structures/MiniGames/BedWars/BedWarsBoxes.js';
+import BedWarsChallenge from './Structures/MiniGames/BedWars/BedWarsChallenges/BedWarsChallenge.js';
+import BedWarsChallenges from './Structures/MiniGames/BedWars/BedWarsChallenges/BedWarsChallenges.js';
+import BedWarsEightOne from './Structures/MiniGames/BedWars/BedWarsEightOne.js';
+import BedWarsEightTwo from './Structures/MiniGames/BedWars/BedWarsEightTwo.js';
+import BedWarsFavorites from './Structures/MiniGames/BedWars/BedWarsFavorites.js';
+import BedWarsFigurines from './Structures/MiniGames/BedWars/BedWarsFigurines.js';
+import BedWarsFourFour from './Structures/MiniGames/BedWars/BedWarsFourFour.js';
+import BedWarsFourThree from './Structures/MiniGames/BedWars/BedWarsFourThree.js';
+import BedWarsItemsPurchased from './Structures/MiniGames/BedWars/BedWarsItemsPurchased.js';
+import BedWarsKillsDeaths from './Structures/MiniGames/BedWars/BedWarsKillsDeaths/BedWarsKillsDeaths.js';
+import BedWarsKillsDeathsType from './Structures/MiniGames/BedWars/BedWarsKillsDeaths/BedWarsKillsDeathsType.js';
 import BedWarsMode from './Structures/MiniGames/BedWars/BedWarsMode.js';
-import BedWarsPracticeBase from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeBase.js';
-import BedWarsPracticeBaseBlocksPlaced from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeBaseBlocksPlaced.js';
-import BedWarsPracticeBridging from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeBridging.js';
-import BedWarsPracticeBridgingRecords from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeBridgingRecords.js';
-import BedWarsPracticeModeAttempts from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeModeAttempts.js';
-import BedWarsPracticeRecord from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeRecord.js';
-import BedWarsPracticeRecordElevation from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeRecordElevation.js';
-import BedWarsPracticeStats from './Structures/MiniGames/BedWars/Practice/BedWarsPracticeStats.js';
+import BedWarsPractice from './Structures/MiniGames/BedWars/BedWarsPractice/BedWarsPractice.js';
+import BedWarsPracticeBridging from './Structures/MiniGames/BedWars/BedWarsPractice/BedWarsPracticeBridging.js';
+import BedWarsPracticeBridgingRecords from './Structures/MiniGames/BedWars/BedWarsPractice/BedWarsPracticeBridgingRecords/BedWarsPracticeBridgingRecords.js';
+import BedWarsPracticeBridgingRecordsDistance from './Structures/MiniGames/BedWars/BedWarsPractice/BedWarsPracticeBridgingRecords/BedWarsPracticeBridgingRecordsDistance.js';
+import BedWarsPracticeBridgingRecordsEevation from './Structures/MiniGames/BedWars/BedWarsPractice/BedWarsPracticeBridgingRecords/BedWarsPracticeBridgingRecordsEevation.js';
+import BedWarsPracticeMode from './Structures/MiniGames/BedWars/BedWarsPractice/BedWarsPracticeMode.js';
+import BedWarsPrivateGameSettings from './Structures/MiniGames/BedWars/BedWarsPrivateGameSettings.js';
+import BedWarsResourcesCollected from './Structures/MiniGames/BedWars/BedWarsResourcesCollected.js';
+import BedWarsSettings from './Structures/MiniGames/BedWars/BedWarsSettings.js';
+import BedWarsSlumber from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumber.js';
+import BedWarsSlumberMinion from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberMinion.js';
+import BedWarsSlumberPhase from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberPhase.js';
+import BedWarsSlumberPhaseThree from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberPhaseThree.js';
+import BedWarsSlumberQuest from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuest.js';
+import BedWarsSlumberQuestGamblerGeorge from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuestGamblerGeorge.js';
+import BedWarsSlumberQuestItem from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuestItem.js';
+import BedWarsSlumberQuestNPC from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuestNPC.js';
+import BedWarsSlumberQuestNPCSBoolean from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuestNPCSBoolean.js';
+import BedWarsSlumberQuestNPCSNumber from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuestNPCSNumber.js';
+import BedWarsSlumberQuestObjective from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberQuest/BedWarsSlumberQuestObjective.js';
+import BedWarsSlumberRoom from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberRoom.js';
+import BedWarsSlumberSandman from './Structures/MiniGames/BedWars/BedWarsSlumber/BedWarsSlumberSandman.js';
+import BedWarsTwoFour from './Structures/MiniGames/BedWars/BedWarsTwoFour.js';
 import BlitzSurvivalGames from './Structures/MiniGames/BlitzSurvivalGames/BlitzSurvivalGames.js';
+import BlitzSurvivalGamesData from './Structures/MiniGames/BlitzSurvivalGames/BlitzSurvivalGamesData.js';
 import BlitzSurvivalGamesKit from './Structures/MiniGames/BlitzSurvivalGames/BlitzSurvivalGamesKit.js';
+import BlitzSurvivalGamesPrivateGames from './Structures/MiniGames/BlitzSurvivalGames/BlitzSurvivalGamesPrivateGames.js';
 import BlockingDead from './Structures/MiniGames/Arcade/BlockingDead.js';
 import Booster from './Structures/Boosters/Booster.js';
 import BowSpleef from './Structures/MiniGames/TNTGames/BowSpleef.js';
@@ -83,7 +113,46 @@ import GalaxyWars from './Structures/MiniGames/Arcade/GalaxyWars.js';
 import Game from './Structures/Game.js';
 import GameAchievements from './Structures/Static/Achievements/GameAchievements.js';
 import GameChallenges from './Structures/Static/GameChallenges.js';
-import GameCounts from './Structures/GameCounts.js';
+import GameCounts from './Structures/Static/GameCounts/GameCounts.js';
+import GameCountsArcade from './Structures/Static/GameCounts/Arcade/GameCountsArcade.js';
+import GameCountsArcadeModes from './Structures/Static/GameCounts/Arcade/GameCountsArcadeModes.js';
+import GameCountsBasicModes from './Structures/Static/GameCounts/GameCountsBasicModes.js';
+import GameCountsBattleGround from './Structures/Static/GameCounts/BattleGround/GameCountsBattleGround.js';
+import GameCountsBattleGroundModes from './Structures/Static/GameCounts/BattleGround/GameCountsBattleGroundModes.js';
+import GameCountsBedWars from './Structures/Static/GameCounts/BedWars/GameCountsBedWars.js';
+import GameCountsBedWarsModes from './Structures/Static/GameCounts/BedWars/GameCountsBedWarsModes.js';
+import GameCountsBuildBattle from './Structures/Static/GameCounts/BuildBattle/GameCountsBuildBattle.js';
+import GameCountsBuildBattleModes from './Structures/Static/GameCounts/BuildBattle/GameCountsBuildBattleModes.js';
+import GameCountsDuels from './Structures/Static/GameCounts/Duels/GameCountsDuels.js';
+import GameCountsDuelsModes from './Structures/Static/GameCounts/Duels/GameCountsDuelsModes.js';
+import GameCountsGames from './Structures/Static/GameCounts/GameCountsGames.js';
+import GameCountsGeneric from './Structures/Static/GameCounts/GameCountsGeneric.js';
+import GameCountsLegacy from './Structures/Static/GameCounts/Legacy/GameCountsLegacy.js';
+import GameCountsLegacyModes from './Structures/Static/GameCounts/Legacy/GameCountsLegacyModes.js';
+import GameCountsMCGO from './Structures/Static/GameCounts/MCGO/GameCountsMCGO.js';
+import GameCountsMCGOModes from './Structures/Static/GameCounts/MCGO/GameCountsMCGOModes.js';
+import GameCountsMurderMystery from './Structures/Static/GameCounts/MurderMystery/GameCountsMurderMystery.js';
+import GameCountsMurderMysteryModes from './Structures/Static/GameCounts/MurderMystery/GameCountsMurderMysteryModes.js';
+import GameCountsPit from './Structures/Static/GameCounts/Pit/GameCountsPit.js';
+import GameCountsPitModes from './Structures/Static/GameCounts/Pit/GameCountsPitModes.js';
+import GameCountsReplay from './Structures/Static/GameCounts/Replay/GameCountsReplay.js';
+import GameCountsReplayModes from './Structures/Static/GameCounts/Replay/GameCountsReplayModes.js';
+import GameCountsSkyBlock from './Structures/Static/GameCounts/SkyBlock/GameCountsSkyBlock.js';
+import GameCountsSkyBlockModes from './Structures/Static/GameCounts/SkyBlock/GameCountsSkyBlockModes.js';
+import GameCountsSkyWars from './Structures/Static/GameCounts/SkyWars/GameCountsSkyWars.js';
+import GameCountsSkyWarsModes from './Structures/Static/GameCounts/SkyWars/GameCountsSkyWarsModes.js';
+import GameCountsSpeedUHC from './Structures/Static/GameCounts/SpeedUHC/GameCountsSpeedUHC.js';
+import GameCountsSuperSmash from './Structures/Static/GameCounts/SuperSmash/GameCountsSuperSmash.js';
+import GameCountsSuperSmashModes from './Structures/Static/GameCounts/SuperSmash/GameCountsSuperSmashModes.js';
+import GameCountsSurvivalGames from './Structures/Static/GameCounts/SurvivalGames/GameCountsSurvivalGames.js';
+import GameCountsTNTGames from './Structures/Static/GameCounts/TNTGames/GameCountsTNTGames.js';
+import GameCountsTNTGamesModes from './Structures/Static/GameCounts/TNTGames/GameCountsTNTGamesModes.js';
+import GameCountsUHC from './Structures/Static/GameCounts/UHC/GameCountsUHC.js';
+import GameCountsUHCModes from './Structures/Static/GameCounts/UHC/GameCountsUHCModes.js';
+import GameCountsWalls3 from './Structures/Static/GameCounts/Walls3/GameCountsWalls3.js';
+import GameCountsWalls3Modes from './Structures/Static/GameCounts/Walls3/GameCountsWalls3Modes.js';
+import GameCountsWoolGames from './Structures/Static/GameCounts/WoolGames/GameCountsWoolGames.js';
+import GameCountsWoolGamesModes from './Structures/Static/GameCounts/WoolGames/GameCountsWoolGamesModes.js';
 import GameQuests from './Structures/Static/GameQuests.js';
 import GrinchSimulator from './Structures/MiniGames/Arcade/GrinchSimulator.js';
 import Guild from './Structures/Guild/Guild.js';
@@ -223,6 +292,7 @@ import SkyBlockMemberDungeonsMode from './Structures/SkyBlock/Member/Dungeons/Sk
 import SkyBlockMemberDungeonsTreasureRun from './Structures/SkyBlock/Member/Dungeons/SkyBlockMemberDungeonsTreasureRun.js';
 import SkyBlockMemberDungeonsTreasuresChest from './Structures/SkyBlock/Member/Dungeons/SkyBlockMemberDungeonsTreasuresChest.js';
 import SkyBlockMemberFairySouls from './Structures/SkyBlock/Member/SkyBlockMemberFairySouls.js';
+import SkyBlockMemberGarden from './Structures/SkyBlock/Member/Garden/SkyBlockMemberGarden.js';
 import SkyBlockMemberInventories from './Structures/SkyBlock/Member/Inventories/SkyBlockMemberInventories.js';
 import SkyBlockMemberInventoriesArmor from './Structures/SkyBlock/Member/Inventories/Armor/SkyBlockMemberInventoriesArmor.js';
 import SkyBlockMemberInventoriesArmorDecoded from './Structures/SkyBlock/Member/Inventories/Armor/SkyBlockMemberInventoriesArmorDecoded.js';
@@ -300,6 +370,8 @@ import SkyBlockMemberRiftWestVillageMirrorverse from './Structures/SkyBlock/Memb
 import SkyBlockMemberRiftWitherCage from './Structures/SkyBlock/Member/Rift/SkyBlockMemberRiftWitherCage.js';
 import SkyBlockMemberRiftWizardTower from './Structures/SkyBlock/Member/Rift/SkyBlockMemberRiftWizardTower.js';
 import SkyBlockMemberRiftWyldWoods from './Structures/SkyBlock/Member/Rift/SkyBlockMemberRiftWyldWoods.js';
+import SkyBlockMemberSkillTree from './Structures/SkyBlock/Member/SkillTree/SkyBlockMemberSkillTree.js';
+import SkyBlockMemberSkillTrees from './Structures/SkyBlock/Member/SkillTree/SkyBlockMemberSkillTrees.js';
 import SkyBlockMemberSlayer from './Structures/SkyBlock/Member/Slayers/SkyBlockMemberSlayer.js';
 import SkyBlockMemberSlayerClaimedLevels from './Structures/SkyBlock/Member/Slayers/SkyBlockMemberSlayerClaimedLevels.js';
 import SkyBlockMemberSlayers from './Structures/SkyBlock/Member/Slayers/SkyBlockMemberSlayers.js';
@@ -320,11 +392,36 @@ import SkyBlockSkill from './Structures/SkyBlock/Skills/SkyBlockSkill.js';
 import SkyBlockSkillLevel from './Structures/SkyBlock/Skills/SkyBlockSkillLevel.js';
 import SkyBlockSkills from './Structures/SkyBlock/Skills/SkyBlockSkills.js';
 import SkyWars from './Structures/MiniGames/SkyWars/SkyWars.js';
-import SkyWarsKit from './Structures/MiniGames/SkyWars/SkyWarsKit.js';
-import SkyWarsKits from './Structures/MiniGames/SkyWars/SkyWarsKits.js';
-import SkyWarsMode from './Structures/MiniGames/SkyWars/SkyWarsMode.js';
-import SkyWarsModeStats from './Structures/MiniGames/SkyWars/SkyWarsModeStats.js';
-import SkyWarsPackages from './Structures/MiniGames/SkyWars/SkyWarsPackages.js';
+import SkyWarsHeads from './Structures/MiniGames/SkyWars/SkyWarsHeads.js';
+import SkyWarsKillsDeaths from './Structures/MiniGames/SkyWars/SkyWarsKillsDeaths.js';
+import SkyWarsKillsDeathsType from './Structures/MiniGames/SkyWars/SkyWarsKillsDeathsType.js';
+import SkyWarsKitsMythic from './Structures/MiniGames/SkyWars/SkyWarsKitsMythics/SkyWarsKitsMythic.js';
+import SkyWarsKitsMythics from './Structures/MiniGames/SkyWars/SkyWarsKitsMythics/SkyWarsKitsMythics.js';
+import SkyWarsMega from './Structures/MiniGames/SkyWars/SkyWarsMega/SkyWarsMega.js';
+import SkyWarsMegaKits from './Structures/MiniGames/SkyWars/SkyWarsMega/SkyWarsMegaKits.js';
+import SkyWarsMini from './Structures/MiniGames/SkyWars/SkyWarsMini.js';
+import SkyWarsMode from './Structures/MiniGames/SkyWars/SkyWarsMode/SkyWarsMode.js';
+import SkyWarsModePerk from './Structures/MiniGames/SkyWars/SkyWarsMode/SkyWarsModePerk.js';
+import SkyWarsPrivateGames from './Structures/MiniGames/SkyWars/SkyWarsPrivateGames.js';
+import SkyWarsRanked from './Structures/MiniGames/SkyWars/SkyWarsRanked/SkyWarsRanked.js';
+import SkyWarsRankedKits from './Structures/MiniGames/SkyWars/SkyWarsRanked/SkyWarsRankedKits.js';
+import SkyWarsSolo from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSolo.js';
+import SkyWarsSoloKits from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKits.js';
+import SkyWarsSoloKitsAdvanced from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsAdvanced.js';
+import SkyWarsSoloKitsBasic from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsBasic.js';
+import SkyWarsSoloKitsLab from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsLab/SkyWarsSoloKitsLab.js';
+import SkyWarsSoloKitsLabAdvanced from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsLab/SkyWarsSoloKitsLabAdvanced.js';
+import SkyWarsSoloKitsLabBasic from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsLab/SkyWarsSoloKitsLabBasic.js';
+import SkyWarsSoloKitsMini from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsMini.js';
+import SkyWarsSoloKitsTourney from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsTourney/SkyWarsSoloKitsTourney.js';
+import SkyWarsSoloKitsTourneyAdvanced from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsTourney/SkyWarsSoloKitsTourneyAdvanced.js';
+import SkyWarsSoloKitsTourneyBasic from './Structures/MiniGames/SkyWars/SkyWarsSolo/SkyWarsSoloKits/SkyWarsSoloKitsTourney/SkyWarsSoloKitsTourneyBasic.js';
+import SkyWarsTeams from './Structures/MiniGames/SkyWars/SkyWarsTeams/SkyWarsTeams.js';
+import SkyWarsTeamsKits from './Structures/MiniGames/SkyWars/SkyWarsTeams/SkyWarsTeamsKits/SkyWarsTeamsKits.js';
+import SkyWarsTeamsKitsAttacking from './Structures/MiniGames/SkyWars/SkyWarsTeams/SkyWarsTeamsKits/SkyWarsTeamsKitsAttacking.js';
+import SkyWarsTeamsKitsDefending from './Structures/MiniGames/SkyWars/SkyWarsTeams/SkyWarsTeamsKits/SkyWarsTeamsKitsDefending.js';
+import SkyWarsTeamsKitsMining from './Structures/MiniGames/SkyWars/SkyWarsTeams/SkyWarsTeamsKits/SkyWarsTeamsKitsMining.js';
+import SkyWarsTeamsKitsSupporting from './Structures/MiniGames/SkyWars/SkyWarsTeams/SkyWarsTeamsKits/SkyWarsTeamsKitsSupporting.js';
 import SmashHeoresHero from './Structures/MiniGames/SmashHeroes/SmashHeoresHero.js';
 import SmashHeroes from './Structures/MiniGames/SmashHeroes/SmashHeroes.js';
 import SmashHeroesMode from './Structures/MiniGames/SmashHeroes/SmashHeroesMode.js';
@@ -354,32 +451,62 @@ import WoolWars from './Structures/MiniGames/WoolGames/WoolWars.js';
 import WoolWarsClass from './Structures/MiniGames/WoolGames/WoolWarsClass.js';
 import Zombies from './Structures/MiniGames/Arcade/Zombies/Zombies.js';
 import ZombiesMap from './Structures/MiniGames/Arcade/Zombies/ZombiesMap.js';
+import ZombiesMapMode from './Structures/MiniGames/Arcade/Zombies/ZombiesMapMode.js';
 
 export {
   Client,
   Errors,
+  HypixelAPIRebornError,
   Achievements,
   Arcade,
   ArcadeOptions,
   ArenaBrawl,
   ArenaBrawlMode,
   BaseAchievement,
+  BaseKillDeathsType,
+  BaseSkyWarsMode,
   BedWars,
   BedWarsBeds,
-  BedWarsCollectedItems,
-  BedWarsDreamMode,
-  BedWarsDreamStats,
+  BedWarsBoxes,
+  BedWarsChallenge,
+  BedWarsChallenges,
+  BedWarsEightOne,
+  BedWarsEightTwo,
+  BedWarsFavorites,
+  BedWarsFigurines,
+  BedWarsFourFour,
+  BedWarsFourThree,
+  BedWarsItemsPurchased,
+  BedWarsKillsDeaths,
+  BedWarsKillsDeathsType,
   BedWarsMode,
-  BedWarsPracticeBase,
-  BedWarsPracticeBaseBlocksPlaced,
+  BedWarsPractice,
   BedWarsPracticeBridging,
   BedWarsPracticeBridgingRecords,
-  BedWarsPracticeModeAttempts,
-  BedWarsPracticeRecord,
-  BedWarsPracticeRecordElevation,
-  BedWarsPracticeStats,
+  BedWarsPracticeBridgingRecordsDistance,
+  BedWarsPracticeBridgingRecordsEevation,
+  BedWarsPracticeMode,
+  BedWarsPrivateGameSettings,
+  BedWarsResourcesCollected,
+  BedWarsSettings,
+  BedWarsSlumber,
+  BedWarsSlumberMinion,
+  BedWarsSlumberPhase,
+  BedWarsSlumberPhaseThree,
+  BedWarsSlumberQuest,
+  BedWarsSlumberQuestGamblerGeorge,
+  BedWarsSlumberQuestItem,
+  BedWarsSlumberQuestNPC,
+  BedWarsSlumberQuestNPCSBoolean,
+  BedWarsSlumberQuestNPCSNumber,
+  BedWarsSlumberQuestObjective,
+  BedWarsSlumberRoom,
+  BedWarsSlumberSandman,
+  BedWarsTwoFour,
   BlitzSurvivalGames,
+  BlitzSurvivalGamesData,
   BlitzSurvivalGamesKit,
+  BlitzSurvivalGamesPrivateGames,
   BlockingDead,
   Booster,
   BowSpleef,
@@ -416,6 +543,45 @@ export {
   GameAchievements,
   GameChallenges,
   GameCounts,
+  GameCountsArcade,
+  GameCountsArcadeModes,
+  GameCountsBasicModes,
+  GameCountsBattleGround,
+  GameCountsBattleGroundModes,
+  GameCountsBedWars,
+  GameCountsBedWarsModes,
+  GameCountsBuildBattle,
+  GameCountsBuildBattleModes,
+  GameCountsDuels,
+  GameCountsDuelsModes,
+  GameCountsGames,
+  GameCountsGeneric,
+  GameCountsLegacy,
+  GameCountsLegacyModes,
+  GameCountsMCGO,
+  GameCountsMCGOModes,
+  GameCountsMurderMystery,
+  GameCountsMurderMysteryModes,
+  GameCountsPit,
+  GameCountsPitModes,
+  GameCountsReplay,
+  GameCountsReplayModes,
+  GameCountsSkyBlock,
+  GameCountsSkyBlockModes,
+  GameCountsSkyWars,
+  GameCountsSkyWarsModes,
+  GameCountsSpeedUHC,
+  GameCountsSuperSmash,
+  GameCountsSuperSmashModes,
+  GameCountsSurvivalGames,
+  GameCountsTNTGames,
+  GameCountsTNTGamesModes,
+  GameCountsUHC,
+  GameCountsUHCModes,
+  GameCountsWalls3,
+  GameCountsWalls3Modes,
+  GameCountsWoolGames,
+  GameCountsWoolGamesModes,
   GameQuests,
   GrinchSimulator,
   Guild,
@@ -555,6 +721,7 @@ export {
   SkyBlockMemberDungeonsTreasureRun,
   SkyBlockMemberDungeonsTreasuresChest,
   SkyBlockMemberFairySouls,
+  SkyBlockMemberGarden,
   SkyBlockMemberInventories,
   SkyBlockMemberInventoriesArmor,
   SkyBlockMemberInventoriesArmorDecoded,
@@ -632,6 +799,8 @@ export {
   SkyBlockMemberRiftWitherCage,
   SkyBlockMemberRiftWizardTower,
   SkyBlockMemberRiftWyldWoods,
+  SkyBlockMemberSkillTree,
+  SkyBlockMemberSkillTrees,
   SkyBlockMemberSlayer,
   SkyBlockMemberSlayerClaimedLevels,
   SkyBlockMemberSlayers,
@@ -652,11 +821,36 @@ export {
   SkyBlockSkillLevel,
   SkyBlockSkills,
   SkyWars,
-  SkyWarsKit,
-  SkyWarsKits,
+  SkyWarsHeads,
+  SkyWarsKillsDeaths,
+  SkyWarsKillsDeathsType,
+  SkyWarsKitsMythic,
+  SkyWarsKitsMythics,
+  SkyWarsMega,
+  SkyWarsMegaKits,
+  SkyWarsMini,
   SkyWarsMode,
-  SkyWarsModeStats,
-  SkyWarsPackages,
+  SkyWarsModePerk,
+  SkyWarsPrivateGames,
+  SkyWarsRanked,
+  SkyWarsRankedKits,
+  SkyWarsSolo,
+  SkyWarsSoloKits,
+  SkyWarsSoloKitsAdvanced,
+  SkyWarsSoloKitsBasic,
+  SkyWarsSoloKitsLab,
+  SkyWarsSoloKitsLabAdvanced,
+  SkyWarsSoloKitsLabBasic,
+  SkyWarsSoloKitsMini,
+  SkyWarsSoloKitsTourney,
+  SkyWarsSoloKitsTourneyAdvanced,
+  SkyWarsSoloKitsTourneyBasic,
+  SkyWarsTeams,
+  SkyWarsTeamsKits,
+  SkyWarsTeamsKitsAttacking,
+  SkyWarsTeamsKitsDefending,
+  SkyWarsTeamsKitsMining,
+  SkyWarsTeamsKitsSupporting,
   SmashHeoresHero,
   SmashHeroes,
   SmashHeroesMode,
@@ -685,34 +879,64 @@ export {
   WoolWars,
   WoolWarsClass,
   Zombies,
-  ZombiesMap
+  ZombiesMap,
+  ZombiesMapMode
 };
 
 export default {
   Client,
   Errors,
+  HypixelAPIRebornError,
   Achievements,
   Arcade,
   ArcadeOptions,
   ArenaBrawl,
   ArenaBrawlMode,
   BaseAchievement,
+  BaseKillDeathsType,
+  BaseSkyWarsMode,
   BedWars,
   BedWarsBeds,
-  BedWarsCollectedItems,
-  BedWarsDreamMode,
-  BedWarsDreamStats,
+  BedWarsBoxes,
+  BedWarsChallenge,
+  BedWarsChallenges,
+  BedWarsEightOne,
+  BedWarsEightTwo,
+  BedWarsFavorites,
+  BedWarsFigurines,
+  BedWarsFourFour,
+  BedWarsFourThree,
+  BedWarsItemsPurchased,
+  BedWarsKillsDeaths,
+  BedWarsKillsDeathsType,
   BedWarsMode,
-  BedWarsPracticeBase,
-  BedWarsPracticeBaseBlocksPlaced,
+  BedWarsPractice,
   BedWarsPracticeBridging,
   BedWarsPracticeBridgingRecords,
-  BedWarsPracticeModeAttempts,
-  BedWarsPracticeRecord,
-  BedWarsPracticeRecordElevation,
-  BedWarsPracticeStats,
+  BedWarsPracticeBridgingRecordsDistance,
+  BedWarsPracticeBridgingRecordsEevation,
+  BedWarsPracticeMode,
+  BedWarsPrivateGameSettings,
+  BedWarsResourcesCollected,
+  BedWarsSettings,
+  BedWarsSlumber,
+  BedWarsSlumberMinion,
+  BedWarsSlumberPhase,
+  BedWarsSlumberPhaseThree,
+  BedWarsSlumberQuest,
+  BedWarsSlumberQuestGamblerGeorge,
+  BedWarsSlumberQuestItem,
+  BedWarsSlumberQuestNPC,
+  BedWarsSlumberQuestNPCSBoolean,
+  BedWarsSlumberQuestNPCSNumber,
+  BedWarsSlumberQuestObjective,
+  BedWarsSlumberRoom,
+  BedWarsSlumberSandman,
+  BedWarsTwoFour,
   BlitzSurvivalGames,
+  BlitzSurvivalGamesData,
   BlitzSurvivalGamesKit,
+  BlitzSurvivalGamesPrivateGames,
   BlockingDead,
   Booster,
   BowSpleef,
@@ -749,6 +973,45 @@ export default {
   GameAchievements,
   GameChallenges,
   GameCounts,
+  GameCountsArcade,
+  GameCountsArcadeModes,
+  GameCountsBasicModes,
+  GameCountsBattleGround,
+  GameCountsBattleGroundModes,
+  GameCountsBedWars,
+  GameCountsBedWarsModes,
+  GameCountsBuildBattle,
+  GameCountsBuildBattleModes,
+  GameCountsDuels,
+  GameCountsDuelsModes,
+  GameCountsGames,
+  GameCountsGeneric,
+  GameCountsLegacy,
+  GameCountsLegacyModes,
+  GameCountsMCGO,
+  GameCountsMCGOModes,
+  GameCountsMurderMystery,
+  GameCountsMurderMysteryModes,
+  GameCountsPit,
+  GameCountsPitModes,
+  GameCountsReplay,
+  GameCountsReplayModes,
+  GameCountsSkyBlock,
+  GameCountsSkyBlockModes,
+  GameCountsSkyWars,
+  GameCountsSkyWarsModes,
+  GameCountsSpeedUHC,
+  GameCountsSuperSmash,
+  GameCountsSuperSmashModes,
+  GameCountsSurvivalGames,
+  GameCountsTNTGames,
+  GameCountsTNTGamesModes,
+  GameCountsUHC,
+  GameCountsUHCModes,
+  GameCountsWalls3,
+  GameCountsWalls3Modes,
+  GameCountsWoolGames,
+  GameCountsWoolGamesModes,
   GameQuests,
   GrinchSimulator,
   Guild,
@@ -888,6 +1151,7 @@ export default {
   SkyBlockMemberDungeonsTreasureRun,
   SkyBlockMemberDungeonsTreasuresChest,
   SkyBlockMemberFairySouls,
+  SkyBlockMemberGarden,
   SkyBlockMemberInventories,
   SkyBlockMemberInventoriesArmor,
   SkyBlockMemberInventoriesArmorDecoded,
@@ -965,6 +1229,8 @@ export default {
   SkyBlockMemberRiftWitherCage,
   SkyBlockMemberRiftWizardTower,
   SkyBlockMemberRiftWyldWoods,
+  SkyBlockMemberSkillTree,
+  SkyBlockMemberSkillTrees,
   SkyBlockMemberSlayer,
   SkyBlockMemberSlayerClaimedLevels,
   SkyBlockMemberSlayers,
@@ -985,11 +1251,36 @@ export default {
   SkyBlockSkillLevel,
   SkyBlockSkills,
   SkyWars,
-  SkyWarsKit,
-  SkyWarsKits,
+  SkyWarsHeads,
+  SkyWarsKillsDeaths,
+  SkyWarsKillsDeathsType,
+  SkyWarsKitsMythic,
+  SkyWarsKitsMythics,
+  SkyWarsMega,
+  SkyWarsMegaKits,
+  SkyWarsMini,
   SkyWarsMode,
-  SkyWarsModeStats,
-  SkyWarsPackages,
+  SkyWarsModePerk,
+  SkyWarsPrivateGames,
+  SkyWarsRanked,
+  SkyWarsRankedKits,
+  SkyWarsSolo,
+  SkyWarsSoloKits,
+  SkyWarsSoloKitsAdvanced,
+  SkyWarsSoloKitsBasic,
+  SkyWarsSoloKitsLab,
+  SkyWarsSoloKitsLabAdvanced,
+  SkyWarsSoloKitsLabBasic,
+  SkyWarsSoloKitsMini,
+  SkyWarsSoloKitsTourney,
+  SkyWarsSoloKitsTourneyAdvanced,
+  SkyWarsSoloKitsTourneyBasic,
+  SkyWarsTeams,
+  SkyWarsTeamsKits,
+  SkyWarsTeamsKitsAttacking,
+  SkyWarsTeamsKitsDefending,
+  SkyWarsTeamsKitsMining,
+  SkyWarsTeamsKitsSupporting,
   SmashHeoresHero,
   SmashHeroes,
   SmashHeroesMode,
@@ -1018,5 +1309,6 @@ export default {
   WoolWars,
   WoolWarsClass,
   Zombies,
-  ZombiesMap
+  ZombiesMap,
+  ZombiesMapMode
 };

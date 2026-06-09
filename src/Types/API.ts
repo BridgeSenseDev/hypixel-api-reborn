@@ -1,9 +1,9 @@
-import type RequestData from '../Private/RequestData.ts';
+import type RequestData from '../Private/RequestData.js';
 import type SkyBlockAuction from '../Structures/SkyBlock/Auctions/SkyBlockAuction.js';
 import type SkyBlockAuctionInfo from '../Structures/SkyBlock/Auctions/SkyBlockAuctionInfo.js';
 import type SkyBlockBaseAuctionInfo from '../Structures/SkyBlock/Auctions/SkyBlockBaseAuctionInfo.js';
 import type { RequestOptions } from './Requests.js';
-import type { SkyblockProfileWithMe } from './SkyBlock.ts';
+import type { SkyblockProfileWithMe } from './SkyBlock.js';
 
 export interface PlayerRequestOptions extends RequestOptions {
   guild?: boolean;
@@ -34,5 +34,7 @@ export interface SkyBlockAuctionsResult {
 export type WithRaw<T> = T & { isRaw(): this is RequestData };
 export type WithSelectedProfile<T> = WithRaw<T> & { selectedProfile?: SkyblockProfileWithMe };
 
-export type GuildFetchOptions = 'id' | 'name' | 'player';
-export type AuctionFetchOptions = 'PROFILE' | 'PLAYER' | 'AUCTION_ID';
+export const GuildFetchOptions = ['id', 'name', 'player'] as const;
+export type GuildFetchOption = (typeof GuildFetchOptions)[number];
+export const AuctionFetchOptions = ['PROFILE', 'PLAYER', 'AUCTION_ID'] as const;
+export type AuctionFetchOption = (typeof AuctionFetchOptions)[number];

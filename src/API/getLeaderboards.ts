@@ -1,16 +1,17 @@
 import Endpoint from '../Private/Endpoint.js';
-import Errors from '../Errors.ts';
+import Errors from '../Errors.js';
+import HypixelAPIRebornError from '../Private/HypixelAPIRebornError.ts';
 import Leaderboard from '../Structures/Leaderboard.js';
 import RequestData from '../Private/RequestData.js';
 import type { RequestOptions } from '../Types/Requests.js';
-import type { WithRaw } from '../Types/API.ts';
+import type { WithRaw } from '../Types/API.js';
 
 class getLeaderboards extends Endpoint {
   override async execute(options?: RequestOptions): Promise<WithRaw<Record<string, Leaderboard[]>> | RequestData> {
     const res = await this.client.requestHandler.request('/leaderboards', options);
     if (res.options.raw) return res;
     if (!res.data.leaderboards) {
-      throw new Error(Errors.SOMETHING_WENT_WRONG.replace(/{cause}/, 'Try again.'));
+      throw new HypixelAPIRebornError(Errors.SOMETHING_WENT_WRONG.replace(/{cause}/, 'Try again.'));
     }
     const leaderboards: Record<string, Leaderboard[]> = {};
     Object.keys(res.data.leaderboards).forEach((key) => {
